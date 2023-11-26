@@ -1,4 +1,6 @@
 \input{../includes/preamble}
+\usepackage{enumerate}
+\usepackage{amsmath}
 \title{VDL2}
 \date{November 2023}
 
@@ -6,6 +8,49 @@
 
 \maketitle
 
-\section{}
+\section*{Q2.2 Loss Functions and Optimization}
+\begin{enumerate}[i]
+    \item Derivative of softmax
+    \begin{alignat}{2}
+        \hat{y_i}=\frac{e^{z_i}}{\sum_{k=1}^n e^{z_k}}
+        \\
+    \end{alignat}
+    Derivative for condition i = j  using quotient rule:
+    \begin{alignat}{2}
+        \frac{\partial{\hat{y}_i}}{\partial{z}_i} &= \frac{e^{z_i}\sum e^{z_k} - e^{z_i} . e^{z_i}}{(\sum_k e^{z_k})^2}
+        \\
+        &= \frac{e^{z_i} (1 - e^{z_i})}{(\sum_k e^{z_k})^2}
+        \\
+        &= \hat y_i (1-\hat y_i)
+    \end{alignat}
+    Derivative for condition i != j  using quotient rule:
+    \begin{alignat}{2}
+        \frac{\partial{\hat{y}_i}}{\partial{z}_j} &= \frac{0- e^{z_i}.e^{z_j}}{(\sum_k e^{z_k})^2}
+        \\
+        &= -\hat{y}_i.\hat{y}_j
+    \end{alignat}
+    \item Derivative of cross-entropy loss function defined as
+    \begin{alignat}{1}
+        L(y, \hat{y}) = - \sum_{k=1}^N y_k \log\hat{y}
+    \end{alignat}
+    \begin{alignat}{2}
+        \frac{\partial L}{\partial \hat{y_i}} = - \sum_i y_i . \frac{1}{\hat{y_i}}
+    \end{alignat}
+    Using chain rule:
+    \begin{alignat}{2}
+        \frac{\partial L}{\partial z_i} &= \frac{\partial L}{\partial \hat{y_i}} . \frac{\partial \hat{y_i}}{\partial z_i}
+    \end{alignat}
+    \begin{alignat}{10}
+        \frac{\partial L}{\partial z_i} &= -  \sum_{i\not=j} y_i. \frac{1}{\hat{y_i}} \frac{\partial \hat{y_i}}{\partial z_i} - y_i.\frac{1}{\hat{y_i}}\frac{\partial \hat{y_i}}{\partial z_i}
+        \\
+        &= - \sum_{i\not=j} y_i.\frac{1}{\hat{y_i}} . (-\hat{y_i}\hat{y_j}) - y_i. \frac{1}{\hat{y_i}} . \hat{y_i} (1 - \hat{y_i})
+        \\
+        &= \sum_{i\not=j} y_i . \hat{y_j} + y_i \hat{y_i} - y_i
+        \\
+        &= \sum_i y_i . \hat{y_j} - y_i
+        \\
+        &= \hat{y_j} - y_i
+    \end{alignat}
+\end{enumerate}
 
 \end{document}
