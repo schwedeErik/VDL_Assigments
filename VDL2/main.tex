@@ -1,15 +1,96 @@
 \input{../includes/preamble}
-\usepackage{enumerate}
-\usepackage{amsmath}
-\title{VDL2}
+
+\title{Exercise 2 - Convolutions and Loss Functions}
 \date{November 2023}
 
 \begin{document}
 
 \maketitle
+\section*{2.1. Convolutions}
 
-\section*{Q2.2 Loss Functions and Optimization}
-\begin{enumerate}[i]
+\subsection*{i)}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    -8 & -5 & -10 & 11 & 18 \\
+    \hline
+    -19 & -5 & -2 & 0 & 21 \\
+    \hline
+    -23 & 4 & -3 & -14 & 24 \\
+    \hline
+    -12 & 7 & -17 & -9 & 29 \\
+    \hline
+    -3 & 1 & -19 & 6 & 22 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\hspace{\fill}
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    -10 & -17 & -18 & -17 & -16 \\
+    \hline
+    -1 & -5 & 4 & 0 & -6 \\
+    \hline
+    -9 & 6 & 5 & -3 & -6 \\
+    \hline
+    8 & 13 & 3 & 5 & 13 \\
+    \hline
+    13 & 11 & 13 & 23 & 22 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\hspace{\fill}
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    33 & 13 & -20 & -18 & 3 \\
+    \hline
+    5 & 4 & -6 & 22 & -16 \\
+    \hline
+    -2 & -23 & 15 & -16 & -4 \\
+    \hline
+    -13 & 15 & 4 & 4 & -18 \\
+    \hline
+    -13 & 8 & -12 & -19 & 12 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection*{ii)}
+These filters are commonly used for edge detection in image processing: 
+\begin{itemize}
+    \item Prewitt Filter: Emphasizes both horizontal and vertical edges in an image.
+    \item Laplacian Filter: Emphasizes regions of rapid intensity change.
+    \item Sobel Filter: Emphasizes vertical edges in an image.
+\end{itemize}
+
+\subsection*{iii)}
+In CNNs, "valid" padding involves no additional padding, resulting in a smaller output, while "same" padding maintains input dimensions by adding padding as needed, yielding an output size equal to the input.
+
+\subsection*{iv)}
+CNNs are preferred over MLPs for image data due to their ability to capture spatial hierarchies efficiently. The use of convolutional layers allows them to recognize local patterns and complex visual features, while weight sharing provides translation invariance. CNNs naturally form feature hierarchies, making them adept at image recognition tasks by exploiting spatial correlations. These architectural features make CNNs more effective for handling the inherent characteristics of image data compared to traditional MLPs.
+
+\subsection*{v)}
+\[ O = \frac{{H - k + 2p}}{{s}} + 1 \]
+
+\subsection*{vi)}
+\[ \text{Trainable parameters} = N \times (k \times k \times C + 1) \]
+where:
+\( N \) is the number of filters,
+\( k \) is the size of each filter (assuming square filters, \( k \times k \)),
+\( C \) is the number of channels in the input, and
+\( 1 \) accounts for the bias term associated with each filter.
+\newpage
+\section*{2.2 Loss Functions and Optimization}
+\begin{enumerate}[i)]
     \item Derivative of softmax
     \begin{alignat}{2}
         \hat{y_i}=\frac{e^{z_i}}{\sum_{k=1}^n e^{z_k}}
@@ -52,5 +133,27 @@
         &= \hat{y_j} - y_i
     \end{alignat}
 \end{enumerate}
+\newpage
+\section*{2.3 Loss Functions with Regularization}
+Given,
+\\
+\[\hat{y} = Xw\]
+
+\[\L(y,\hat{y_i}) = \frac{1}{n} * \sum_{i=1}^n ((\hat{y_i} - y_i)^{2}) +  \sum_{i=1}^d w_i^{2}\]
+
+\[\hspace{0.5cm}  = \frac{1}{n} * \sum_{i=1}^n ((\hat{y_i} - y_i)^{2}) + {||w||}_{2}^{2} \]
+Now, Let’s find derivative of L w.r.t w and set it to 0 to get minimum value of w 
+
+\[\frac {\partial L}{\partial w} = 0\]
+
+\[\implies \frac{1}{n} * \sum_{i=1}^n 2(\hat{y_i} - {y_i})({X_i}) + 2\lambda w = 0 \]
+
+\[\implies \frac{1}{n} * X^{T} (\hat{y}-y) + \lambda w = 0\]
+
+\[\implies w = \frac{1}{\lambda n} * X^{T}(y-\hat{y})\]
+
+\[\therefore Closed \hspace{0.1cm} form\hspace{0.1cm} for\hspace{0.1cm} vector\hspace{0.1cm} w\hspace{0.1cm} that\hspace{0.1cm} minimizes\hspace{0.1cm} L\hspace{0.1cm} is\hspace{0.1cm} \]
+\[w = \frac{1}{\lambda n} * X^{T}(y-Xw)\]
+\\
 
 \end{document}
