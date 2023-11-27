@@ -139,9 +139,9 @@ Given,
 \\
 \[\hat{y} = Xw\]
 
-\[\L(y,\hat{y_i}) = \frac{1}{n} * \sum_{i=1}^n ((\hat{y_i} - y_i)^{2}) +  \sum_{i=1}^d w_i^{2}\]
+\[\L(y,\hat{y_i}) = \frac{1}{n} * \sum_{i=1}^n ((\hat{y_i} - y_i)^{2}) +  \lambda \sum_{i=1}^d w_i^{2}\]
 
-\[\hspace{0.5cm}  = \frac{1}{n} * \sum_{i=1}^n ((\hat{y_i} - y_i)^{2}) + {||w||}_{2}^{2} \]
+\[\hspace{0.5cm}  = \frac{1}{n} * \sum_{i=1}^n ((\hat{y_i} - y_i)^{2}) + \lambda {||w||}_{2}^{2} \]
 Now, Let’s find derivative of L w.r.t w and set it to 0 to get minimum value of w 
 
 \[\frac {\partial L}{\partial w} = 0\]
