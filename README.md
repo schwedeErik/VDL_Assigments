@@ -13,7 +13,7 @@ Through [extension](https://github.com/James-Yu/LaTeX-Workshop/wiki)
 # Rules
 
 - The document type, the authors and the packages are defined in the preamble.tex file.
-- Please do not add your own author, packages to the exercise file!
+- Please do not add your own author or packages to the exercise file!
 - If you need packages that are not yet defined in the preamble just define them in the preamble.
 
 # Workflow
