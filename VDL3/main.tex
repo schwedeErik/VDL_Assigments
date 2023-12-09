@@ -20,6 +20,58 @@
 \section*{3.2. Gated recurrent units}
 \subsection*{i)}
 
+Given:
+\begin{alignat}{2}
+    u_t &= \sigma (w.h_{t-1} + w.x_t)
+    \\s_t &= w. (h_{t-1} + x_t)
+    \\h_t &= u_t. h_{t-1}  + (1-u_t) . s_t
+\end{alignat}
+
+First, let's differentiate equation \((3\)) with respect to h\textsubscript{t-1}:
+
+\begin{alignat}{2}
+\frac {\partial h_t}{\partial h_{t-1}} &= \frac {u_t * h_{t-1} + (1-u_t) * s_t}{\partial h_{t-1}}
+\end{alignat}
+
+On applying the chain rule : 
+
+\begin{alignat}{2}
+\frac {\partial h_t}{\partial h_{t-1}} &= u_t . \frac {\partial h_{t-1}}{\partial h_{t-1}} + (1-u_t).\frac {\partial s_t}{\partial h_{t-1}}
+\end{alignat}
+
+We have the value of s from equation 2:
+
+\begin{alignat}{2}
+\\s_t &= w. (h_{t-1} + x_t)
+\\ \frac {\partial s_t}{\partial h_{t-1}} &= w.\frac{\partial h_{t-1}}{\partial h_{t-1}} + 0 
+\\ &= w
+\end{alignat}
+
+On substituting it back to our previous equation, we have:
+
+\begin{alignat}{2}
+\frac {\partial h_t}{\partial h_{t-1}} &= u_t + (1-u_t).w
+\end{alignat}
+
+On comparing it with the required form A\textsubscript{t} . w + B\textsubscript{t} , we get:
+
+\begin{alignat}{2}
+    A_t &= 1-u_t
+\\ B_t &= u_t
+\end{alignat}
+
 \subsection*{ii)}
+The long-term derivative can be written as:
+\begin{alignat}{2}
+\frac {\partial h_t}{\partial h_0} &= \frac {\partial h_t}{\partial h_{t-1}} . \frac {\partial h_{t-1}}{\partial h_{t-2}}. \frac {\partial h_{t-2}}{\partial h_{t-3}}...... \frac {\partial h_1}{\partial h_0} 
+\end{alignat}
+From part (i) we have found that, for every term:
+
+\begin{alignat}{2}
+\frac {\partial h_t}{\partial h_{t-1}} = (1-u_t) .w + u_t
+\end{alignat}
+u\textsubscript{t} is the output of a sigmoid function that has a value in the range of (0,1). Hence, the term remains non-zero. This helps to avoid the vanishing gradient problem, as no exponential decay term can cause the gradients to vanish over long sequences.
+When u\textsubscript{t} is 1, it implies that the new hidden state retains the value of the previous hidden state and when u\textsubscript{t} is 0, it ignores the information from the previous step. 
+
 
 \end{document}
