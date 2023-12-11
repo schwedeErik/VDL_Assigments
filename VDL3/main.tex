@@ -20,7 +20,7 @@ The loss functions is defined as:
 Lets expand the sum:
 \[ \frac{\partial L_t}{\partial W} =
   \frac{\partial L_t}{\partial h_t} \cdot (\frac{\partial h_t}{\partial W} +
-  \frac{\partial h_t}{\partial h_{t-1}} \cdot \frac{\partial h_{t-1}}{\partial W} + . . . +
+  \frac{\partial h_t}{\partial h_{t-1}} \cdot \frac{\partial h_{t-1}}{\partial W} + \cdots +
   \frac{\partial h_t}{\partial h_1} \cdot \frac{\partial h_1}{\partial W})\]
 %\[ \frac{\partial L_3}{\partial W} = \frac{\partial L_3}{\partial h_3} \sum_{k=1}^{3} \frac{\partial h_3}{\partial h_k} \cdot \frac{\partial h_k}{\partial W}\]
 \[ \frac{\partial L_t}{\partial W} = \frac{\partial L_t}{\partial h_t} \sum_{k=1}^{t} \frac{\partial h_t}{\partial h_k} \cdot \frac{\partial h_k}{\partial W}\]
@@ -35,13 +35,97 @@ Lets expand the sum:
 Given:
 \[f(h) = \sigma(W \cdot h)\]
 Show that:
-\[\frac{\partial f}{\partial h} = diag(\sigma^{\prime}(Wh))W\]
-\subsection*{iii)}
+\[\frac{\partial f}{\partial h} = diag(\sigma^{\prime}(Wh))W\]\\
+The partial derivative for the i-th value of f:
+\[\frac{\partial f_i}{\partial h} = \sigma^{\prime}(W_i^T \cdot h) \cdot W_i^T\]
+\[\frac{\partial f_i}{\partial h} = \sigma^{\prime}(W_i^T \cdot h) \cdot [w_{i,0},w_{i,1},\cdots,w_{i,n}]\]
+\[s_i = \sigma^{\prime}(W_i^T \cdot h)\]
+\[\frac{\partial f_i}{\partial h} =s_i \cdot [w_{i,0},w_{i,1},\cdots,w_{i,n}]\]
+\[\frac{\partial f_i}{\partial h} = [w_{i,0} \cdot s_i,w_{i,1} \cdot s_i,\cdots,w_{i,n} \cdot s_i]\]
 
+\[ \frac{\partial f}{\partial h} = 
+\begin{bmatrix}
+    w_{0,0} \cdot s_0 & w_{0,1} \cdot s_0 & \cdots & w_{0,n} \cdot s_0\\
+    w_{1,0} \cdot s_1 & w_{1,1} \cdot s_1 & \cdots & w_{1,n} \cdot s_1\\
+    \vdots            & \vdots          & \vdots   & \vdots\\
+    w_{i,0} \cdot s_i & w_{i,1} \cdot s_i & \cdots & w_{i,n} \cdot s_i\\
+\end{bmatrix}\]
+\[ \frac{\partial f}{\partial h} = 
+\begin{bmatrix}
+    s_0 & 0   & \cdots & \cdots & 0\\
+    0   & s_1 & 0      & \cdots & 0\\
+    \vdots            & \vdots          & \vdots   & \vdots & \vdots\\
+    0 & \cdots & \cdots & 0 & s_i\\
+\end{bmatrix}
+\cdot \begin{bmatrix}
+    w_{0,0}  & w_{0,1} & \cdots & w_{0,n}\\
+    w_{1,0}  & w_{1,1} & \cdots & w_{1,n} \\
+    \vdots  & \vdots  & \vdots  & \vdots\\
+    w_{i,0} & w_{i,1} & \cdots  & w_{i,n} \\
+\end{bmatrix}\]
+\[\frac{\partial f}{\partial h} = diag(\sigma^{\prime}(Wh))W\]
+
+\subsection*{iii)}
+As proven in ii) if $f(h) = \sigma(Wh)$ then $\frac{\partial f}{\partial h} = diag(\sigma^{\prime}(Wh))W$. \\
+That means that $\frac{\partial h_t}{\partial h_{t-1}}$ is on the shape of $diag(\sigma^{\prime})W$.\\
+The extended sum for T=3 equals to:
+\[\frac{\partial L}{\partial W} = \sum_{t=1}^{3} 
+\sum_{k=1}^{t} 
+\frac{\partial L_t}{\partial h_t} 
+\frac{\partial h_t}{\partial h_k} 
+\frac{\partial h_k}{\partial W} \]
+\[\frac{\partial L}{\partial W} = 
+\frac{\partial L_1}{\partial h_1} 
+\frac{\partial h_1}{\partial h_1} 
+\frac{\partial h_k}{\partial W}
++
+\frac{\partial L_2}{\partial h_1} 
+\frac{\partial h_2}{\partial h_2} 
+\frac{\partial h_1}{\partial W}
++
+\frac{\partial L_2}{\partial h_2} 
+\frac{\partial h_2}{\partial h_2} 
+\frac{\partial h_2}{\partial W}
++
+\frac{\partial L_3}{\partial h_3} 
+\frac{\partial h_3}{\partial h_3} 
+\frac{\partial h_3}{\partial W}
++
+\frac{\partial L_3}{\partial h_3} 
+\frac{\partial h_3}{\partial h_2} 
+\frac{\partial h_2}{\partial W}
++
+\frac{\partial L_3}{\partial h_t} 
+\textcolor{red}{\frac{\partial h_3}{\partial h_2} 
+\frac{\partial h_2}{\partial h_1}}
+\frac{\partial h_1}{\partial W}\]\\
+That means that $\frac{\partial h_t}{\partial h_{t-1}} = diag(\sigma^{\prime})W$\\
+As it can be observed in the extended sum there are two matrices getting multiplied(marked in \textcolor{red}{red}). Which corresponds with the the rule the $T - 1$ matrixes of type $\frac{\partial h_i}{\partial h_{i-1}} \cdot \frac{\partial h_j}{\partial h_{j-1}}$
+should be multiplied.\\
+In case of an arbitrary T:\\
+\begin{center}
+    for $i>j$
+\end{center}
+\[\frac{\partial h_i}{\partial h_j} = \prod_{k=j}^{i-1} \frac{\partial h_{k+1}}{\partial h_k}\] 
+\[\frac{\partial h_k}{\partial h_1} = \prod_{k=1}^{T-1} \frac{\partial h_{k+1}}{\partial h_k}\]
+The number of elements of this product can be calculated as follows:\\
+\[T-1-1+1 = T -1\] 
 
 \subsection*{iv)}
-
-
+\[A^{30} = Q\Lambda^{30}Q^{-1}\]
+\[\Lambda^{30}=\begin{bmatrix}
+    0.4^{30} & 0\\
+    0 & 0.9^{30}
+\end{bmatrix} =
+\begin{bmatrix}
+    0 & 0\\
+    0 & 0.04
+\end{bmatrix}\]
+\[A^{30} = \begin{bmatrix}
+    0.014 & -0.019\\
+    -0.019 & 0.026
+\end{bmatrix}\]
+When all the gradients are less then 1 there will be a vanishing  gradient problem. If one of them is over 1 we have a exploding gradient problem. If all are equal to one there is the perfect scenario. The loss value will be propagated through all layers of the network as it is.
 \section*{3.2. Gated recurrent units}
 \subsection*{i)}
 
