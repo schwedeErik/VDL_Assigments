@@ -8,9 +8,34 @@
 \maketitle
 \section*{3.1. Backpropagation through Time}
 \subsection*{i)}
+Show that: 
+\[\frac{\partial L}{\partial W} = \sum_{t=1}^{T} 
+\sum_{k=1}^{t} 
+\frac{\partial L_t}{\partial h_t} 
+\frac{\partial h_t}{\partial h_k} 
+\frac{\partial h_k}{\partial W} \]\\
+The loss functions is defined as:
+\[L=\sum_{t=1}^{T} L_t\]
+\[\frac{\partial L}{\partial W} = \sum_{t=1}^{T}\frac{\partial L_t}{\partial W}\]
+Lets expand the sum:
+\[ \frac{\partial L_t}{\partial W} =
+  \frac{\partial L_t}{\partial h_t} \cdot (\frac{\partial h_t}{\partial W} +
+  \frac{\partial h_t}{\partial h_{t-1}} \cdot \frac{\partial h_{t-1}}{\partial W} + . . . +
+  \frac{\partial h_t}{\partial h_1} \cdot \frac{\partial h_1}{\partial W})\]
+%\[ \frac{\partial L_3}{\partial W} = \frac{\partial L_3}{\partial h_3} \sum_{k=1}^{3} \frac{\partial h_3}{\partial h_k} \cdot \frac{\partial h_k}{\partial W}\]
+\[ \frac{\partial L_t}{\partial W} = \frac{\partial L_t}{\partial h_t} \sum_{k=1}^{t} \frac{\partial h_t}{\partial h_k} \cdot \frac{\partial h_k}{\partial W}\]
+\[\frac{\partial L}{\partial W} = \sum_{t=1}^{T}\frac{\partial L_t}{\partial h_t} \sum_{k=1}^{t} \frac{\partial h_t}{\partial h_k} \cdot \frac{\partial h_k}{\partial W}\]
 
+\[\frac{\partial L}{\partial W} = \sum_{t=1}^{T} 
+\sum_{k=1}^{t} 
+\frac{\partial L_t}{\partial h_t} 
+\frac{\partial h_t}{\partial h_k} 
+\frac{\partial h_k}{\partial W} \]
 \subsection*{ii)}
-
+Given:
+\[f(h) = \sigma(W \cdot h)\]
+Show that:
+\[\frac{\partial f}{\partial h} = diag(\sigma^{\prime}(Wh))W\]
 \subsection*{iii)}
 
 
